@@ -1,0 +1,126 @@
+definitions:
+  http.Error:
+    properties:
+      message:
+        type: string
+    required:
+    - message
+    type: object
+  http.Response:
+    properties:
+      message:
+        type: string
+      value: {}
+    required:
+    - message
+    type: object
+  request.GeocodingRequest:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+      region:
+        type: string
+      result_type:
+        type: string
+    type: object
+  response.AddressResponse:
+    properties:
+      long_name:
+        type: string
+      short_name:
+        type: string
+      types:
+        items:
+          type: string
+        type: array
+    type: object
+  response.GeocodingResponse:
+    properties:
+      address_components:
+        items:
+          $ref: '#/definitions/response.AddressResponse'
+        type: array
+      formatted_address:
+        type: string
+      geometry:
+        $ref: '#/definitions/response.GeometryResponse'
+      place_id:
+        type: string
+      types:
+        items:
+          type: string
+        type: array
+    type: object
+  response.GeometryResponse:
+    properties:
+      location:
+        $ref: '#/definitions/response.LocationResponse'
+      location_type:
+        type: string
+      viewport:
+        $ref: '#/definitions/response.ViewportResponse'
+    type: object
+  response.LocationResponse:
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  response.ViewportResponse:
+    properties:
+      northeast:
+        $ref: '#/definitions/response.LocationResponse'
+      southwest:
+        $ref: '#/definitions/response.LocationResponse'
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+info:
+  contact:
+    email: indraadha24@gmail.com
+    name: LRT SUMSEL
+paths:
+  /realtime-track:
+    get:
+      consumes:
+      - application/json
+      description: Get Realtime Track
+      parameters:
+      - description: Geocoding Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.GeocodingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                value:
+                  $ref: '#/definitions/response.GeocodingResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.Error'
+      summary: Get Realtime Track
+      tags:
+      - Realtime Track
+swagger: "2.0"
