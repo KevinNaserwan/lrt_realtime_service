@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option go_package = "github.com/kevinnaserwan/lrt-realtime-service/proto";
+
+// Package name
+package lrt_realtime_service;
+
+// Request message
+message GeocodingRequest {
+    double latitude = 1;
+    double longitude = 2;
+    string result_type = 3;
+    string region = 4;
+}
+
+// Response message
+message GeocodingResponse {
+    repeated Result results = 1;
+    string status = 2;
+}
+
+// Result message for each geocoding response result
+message Result {
+    string formatted_address = 1;
+    string place_id = 2;
+}
+
+// Service definition
+service RealtimeTrackService {
+    rpc GetRealtimeTrack(GeocodingRequest) returns (GeocodingResponse);
+    rpc StartPeriodicUpdate(GeocodingRequest) returns (GeocodingResponse);
+}
