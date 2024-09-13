@@ -41,3 +41,6 @@ tmp/
 
 # Build Errors Log
 build-errors.log
+
+# IDE files
+.DS_Store
