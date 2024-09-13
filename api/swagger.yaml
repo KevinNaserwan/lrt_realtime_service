@@ -14,17 +14,6 @@ definitions:
     required:
     - message
     type: object
-  request.GeocodingRequest:
-    properties:
-      latitude:
-        type: number
-      longitude:
-        type: number
-      region:
-        type: string
-      result_type:
-        type: string
-    type: object
   response.AddressResponse:
     properties:
       long_name:
@@ -90,12 +79,16 @@ paths:
       - application/json
       description: Get Realtime Track
       parameters:
-      - description: Geocoding Request
-        in: body
-        name: request
+      - description: Latitude
+        in: query
+        name: latitude
         required: true
-        schema:
-          $ref: '#/definitions/request.GeocodingRequest'
+        type: number
+      - description: Longitude
+        in: query
+        name: longitude
+        required: true
+        type: number
       produces:
       - application/json
       responses:

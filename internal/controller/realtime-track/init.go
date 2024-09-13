@@ -11,9 +11,10 @@ type realtimeTrackController struct {
 	Config               *env.Config
 }
 
-func NewRealtimeTrack(router *gin.Engine, realtimeTrackUsecase realtimeTrackUsecase.Usecase) {
+func NewRealtimeTrackController(router *gin.RouterGroup, realtimeTrackUsecase realtimeTrackUsecase.Usecase, config *env.Config) {
 	controller := &realtimeTrackController{
 		RealtimeTrackUsecase: realtimeTrackUsecase,
+		Config:               config, // Pass the config with Google API Key
 	}
 
 	router.GET("/realtime-track", controller.GetRealtimeTrack)

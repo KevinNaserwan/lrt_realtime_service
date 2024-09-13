@@ -6,7 +6,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	docs "github.com/kevinnaserwan/lrt-realtime-service/api"
+	realtimeTrackController "github.com/kevinnaserwan/lrt-realtime-service/internal/controller/realtime-track"
 	http "github.com/kevinnaserwan/lrt-realtime-service/internal/http/server"
+	"github.com/kevinnaserwan/lrt-realtime-service/internal/http/server/middleware"
+	RealtimeTrackUsecase "github.com/kevinnaserwan/lrt-realtime-service/internal/usecase/realtime-track"
+	"github.com/kevinnaserwan/lrt-realtime-service/internal/util/env"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -33,7 +37,7 @@ func (a *app) StartServer() {
 		log.Println("Swagger initialized successfully")
 	}
 
-	initController(server)
+	initController(server, a.config)
 
 	log.Printf("Server is running on port %d", a.config.Port)
 	err := server.Run(fmt.Sprintf(":%d", a.config.Port))
@@ -43,6 +47,13 @@ func (a *app) StartServer() {
 
 }
 
-func initController(server *gin.Engine) {
+func initController(root *gin.Engine, config *env.Config) {
+	// Initialize the real-time track usecase with the config
+	realtimeTrackUsecase := RealtimeTrackUsecase.NewRealtimeTrack(config)
 
+	routerGroup := root.Group("/api/v1")
+	routerGroup.Use(middleware.ErrorHandler())
+
+	// Initialize the real-time track controller and route, pass config to controller
+	realtimeTrackController.NewRealtimeTrackController(routerGroup.Group("/track"), realtimeTrackUsecase, config)
 }

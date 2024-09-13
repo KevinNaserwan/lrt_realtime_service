@@ -33,13 +33,18 @@ const docTemplate = `{
                 "summary": "Get Realtime Track",
                 "parameters": [
                     {
-                        "description": "Geocoding Request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.GeocodingRequest"
-                        }
+                        "type": "number",
+                        "description": "Latitude",
+                        "name": "latitude",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Longitude",
+                        "name": "longitude",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -105,23 +110,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "value": {}
-            }
-        },
-        "request.GeocodingRequest": {
-            "type": "object",
-            "properties": {
-                "latitude": {
-                    "type": "number"
-                },
-                "longitude": {
-                    "type": "number"
-                },
-                "region": {
-                    "type": "string"
-                },
-                "result_type": {
-                    "type": "string"
-                }
             }
         },
         "response.AddressResponse": {
